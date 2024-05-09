@@ -5,39 +5,22 @@ import { useMyContextController} from '../store'
 import { getActionFromState } from '@react-navigation/native'
 
 const Home = () => {
+    
     const [textCv, setTextCv] = useState('');
     [jobs, setJobs] = useState([]);
     const [controller, dispatch] = useMyContextController();
     const {userLogin} = controller;
-    const {email} = userLogin;
+    const {email, fullName} = userLogin;
+    let arrayData = [];
+    ref = firestore().collection('USERS').doc(email).collection('JOBS').doc('CV');
 
     useEffect(()=>{
-        jobs=[];
+        jobs=arrayData;
+        console.log(userLogin)
     },[email])
     
-    const getDataFromFirestore = () => {
-        return firestore()
-          .collection('USERS')
-          .doc(email)
-          .collection('JOBS')
-          .doc('CV')
-          .get()
-          .then((documentSnapshot) => {
-            if (documentSnapshot.exists) {
-              const data = documentSnapshot.data().jobs;
-              return data;
-            } else {
-              console.log('Document does not exist');
-              return [];
-            }
-          })
-          .catch((error) => {
-            console.error('Error getting data from Firestore:', error);
-            return [];
-          });
-      };
-      
-      console.log(getDataFromFirestore())
+    
+    
 
 
     const handleAddJob = async (textCv) => {
@@ -46,6 +29,20 @@ const Home = () => {
         // Thêm dữ liệu mới vào collection "JOBS" của người dùng
         await firestore().collection('USERS').doc(email).collection('JOBS').doc('CV').set({jobs});
     }
+
+    useEffect(()=>{
+        ref.onSnapshot(querySnapshot=>{
+            querySnapshot.data().jobs.forEach(element => {
+                arrayData.push(element);
+            });
+        }, error => {
+            console.error('Error occurred:', error);
+            // Xử lý lỗi tại đây
+        })
+        
+    })
+
+
     const goku =['thien','duong']
   return (
     <View style={styles.container}>
@@ -55,9 +52,10 @@ const Home = () => {
                 <Text>Add</Text>
             </TouchableOpacity>
         </View>
-        {/* <FlatList data={getDataFromFirestore()} renderItem={({ item }) => (<Text style={[styles.item]}>{item}</Text>)}
+        <FlatList data={arrayData} renderItem={({ item }) => (<Text style={[styles.item]}>{item}</Text>)}
       keyExtractor={(item, index) => index.toString()}
-    /> */}
+    />
+        <Text style={{backgroundColor:'#ffffff', flex:0,fontSize:25,fontWeight:'bold',textAlign:'center', color:'black'}}>User: {fullName}</Text>
     </View>
   )
 }
