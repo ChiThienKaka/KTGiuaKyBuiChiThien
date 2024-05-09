@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "837474724508",
+    "project_id": "dangnhap-b45d8",
+    "storage_bucket": "dangnhap-b45d8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:837474724508:android:d4fc1b8b1deb0002d99b59",
+        "android_client_info": {
+          "package_name": "com.luyentapgiuaki"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwTb2dRW4hUQf0bgzbsLJ2Go2xnmi2Ytw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
